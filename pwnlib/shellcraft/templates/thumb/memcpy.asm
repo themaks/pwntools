@@ -5,6 +5,19 @@ Args:
     dest: Destination address
     src: Source address
     n: Number of bytes
+
+Example:
+    >>> s = shellcraft.push(u32(b"AAAA"))
+    >>> s += shellcraft.push(u32(b"AAAA"))
+    >>> s += shellcraft.mov("r5", "sp")
+    >>> s += shellcraft.push(u32(b"BBBB"))
+    >>> s += shellcraft.push(u32(b"BBBB"))
+    >>> s += shellcraft.memcpy("sp", "r5", 4)
+    >>> s += shellcraft.write(1, "sp", 8)
+    >>> s += shellcraft.exit(0)
+    >>> run_assembly(s).recvall()
+    b'AAAABBBB'
+
 </%docstring>
 <%page args="dest, src, n"/>
 <%
